@@ -15,26 +15,32 @@ def generate(length, min_val, max_val):
 
     return output
 
+print(generate(1000, 10, 30))
+
 '''
-Vytvorte funkciu, ktorá bude simulovať hod kockou. Kocka hádžeme náhodne 20 krát.
+Uloha 1.
+Vytvorte funkciu, ktorá bude simulovať hod kockou. Kockou hádžeme náhodne 20 krát.
 Vypíšte koľko krát sa nám podarilo vypísať čísla 1,2,3,4,5 a 6.
 Pre výber náhodného prvku z poľa môžeme použiť funkciu random.choice()
+
 Napríklad:
 array= [1,2,0,100,4]
 random_number = random.choice (array)
 '''
 
 '''
+Uloha 2.
 Uvažujme pole obsahujúce 8 rôznych farieb. Vyberte náhodnu farbu a vypíšte ju. 
 '''
 
 '''
+Uloha 3.
 Vypíšte náhodné číslo, ktoré je deliteľné 7 a 5 zároveň.
 '''
 
 
 '''
+Uloha 4.
 Vytvorte simuláciu hry kameň papier nožnice. Hra končí v momente keď jeden z hráčov
 dosiahne 3 body.
-
 '''
