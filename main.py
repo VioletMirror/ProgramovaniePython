@@ -16,7 +16,7 @@ def generate(length, min_val, max_val):
 
     return output
 
-# Zadania na hodinu 20.3.2025
+# Zadania na hodinu 20.3. 2025
 '''
 Uloha 1.
 Vytvorte funkciu, ktorá bude simulovať hod kockou. Kockou hádžeme náhodne 20 krát.
