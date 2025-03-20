@@ -1,4 +1,5 @@
 import random
+
 def generate(length, min_val, max_val):
     output = ''
     state = False
@@ -14,8 +15,6 @@ def generate(length, min_val, max_val):
         remaining -= sample
 
     return output
-
-print(generate(1000, 10, 30))
 
 '''
 Uloha 1.
