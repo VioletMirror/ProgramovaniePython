@@ -1,46 +1,28 @@
-import random
+# Zadania na hodinu 27.3. 2025
 
-def generate(length, min_val, max_val):
-    output = ''
-    state = False
-    remaining = length
+"""
+Úloha 1.
+Vytvorte funkciu, ktorá bude generovať náhodné čísla od 1 do 100. Funckia bude počítať ich súčet a skončí dokým súčet týchto čísel
+nebude rovný 1000. Ak by bol aktuálny súčet väčší ako 1000, začína znova.
 
-    while remaining > 0:
-        sample = random.randint(min_val, max_val)
-        if sample > remaining:  # Ensure we don't exceed the length
-            sample = remaining
+"""
 
-        output += ('1' if state else '0') * sample
-        state = not state
-        remaining -= sample
+"""
+Úloha 2.
+Máme dané 2 polia.
+Pole1 = [10,20,30,45,100]
+Pole2 = [49, 104, 1004,55, 26]
 
-    return output
+Výsledkom programu bude pole, ktoré je súčtom Pole1 a Pole2.
 
-# Zadania na hodinu 20.3. 2025
-'''
-Uloha 1.
-Vytvorte funkciu, ktorá bude simulovať hod kockou. Kockou hádžeme náhodne 20 krát.
-Vypíšte koľko krát sa nám podarilo vypísať čísla 1,2,3,4,5 a 6.
-Pre výber náhodného prvku z poľa môžeme použiť funkciu random.choice()
+Naším výsledným poľom bude [59, 134, 1034, 100, 126] 
 
-Napríklad:
-array= [1,2,0,100,4]
-random_number = random.choice (array)
-'''
+"""
 
-'''
-Uloha 2.
-Uvažujme pole obsahujúce 8 rôznych farieb. Vyberte náhodnu farbu a vypíšte ju. 
-'''
+"""
+Úloha 3.
+Užívateľ zadá svoj rok narodenia. Program vypočíta, koľko rokov bude mať v roku 2155.
+Ďalej vypíše počet mesiacov, týždňov, dní, hodín, minút a sekúnd medzi rokom narodenia a rokom 2155.
 
-'''
-Uloha 3.
-Vypíšte náhodné číslo, ktoré je deliteľné 7 a 5 zároveň.
-'''
-
-
-'''
-Uloha 4.
-Vytvorte simuláciu hry kameň papier nožnice. Hra končí v momente keď jeden z hráčov
-dosiahne 3 body.
-'''
+pre zjednodušenie môžeme uvažovať, že rok má 365,25 dní a 52,143 týždňov.
+"""
