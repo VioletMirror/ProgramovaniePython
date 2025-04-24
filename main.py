@@ -1,173 +1,85 @@
-# Zadania na hodinu 10.4. 2025
+from scratch import Stage, Sprite, play_sound
+import math
 
-"""
-Úloha 1.
-Majme slovník: {“mesto”:”Bratislava”, “dedina”: Vlkolínec} . Pridajte do slovníku akúkoľvek
-hodnotu s kľúčom štát.
-"""
+# Vytvoríme hlavné herné javisko
+stage = Stage()
+stage.set_background("background.jpg")  # Pridáme pozadie
 
-"""
-Úloha 2.
-Majme slovník: 
+# Pridáme dve postavy (sprite1 a sprite2)
+sprite1 = Sprite(stage, "char1.png", x=100, y=100)
+sprite2 = Sprite(stage, "char2.png", x=300, y=150)
 
-slovnik = {“mesto”:”Bratislava”, “dedina”: "Vlkolinec"} 
- 
-Napíšte funkciu, ktorá dostane ako parameter názov slovenského mesta. Následne vráti 
-True ak slovník obsahuje zadané
-mesto a False ak nie. 
-"""
+# Keď kliknem na sprite1, vypíše sa správa
+sprite1.on_click(lambda: print("Klikol si na sprite1!"))
+
+# Zoznam projektilov, ktoré vypálime
+projectiles = []
 
 
-"""
-Úloha 3.
-Vytvorte funkciu, ktorá sčíta počet všetkých obyvateľ miest v slovníku:
+def game_loop():
+    # --- Otáčanie smerom k myši ---
+    mx, my = stage.get_mouse_position()  # kde je myš?
+    dx = mx - sprite1.x  # rozdiel vodorovne
+    dy = my - sprite1.y  # rozdiel zvisle
+    angle = math.atan2(dy, dx)  # uhol v radiánoch
+    sprite1.set_rotation(math.degrees(angle))  # otočíme na myš
 
-Obyvatelia = {"Bratislava":500000, "Pezinok":25000, "Presov": 100000, "Humenne": 40000}
+    # --- Pohyb podľa kláves (WASD) ---
+    speed = 5  # rýchlosť pohybu
+    if stage.is_key_pressed("w"):  # vpred k myši
+        sprite1.change_x(math.cos(angle) * speed)
+        sprite1.change_y(math.sin(angle) * speed)
+    if stage.is_key_pressed("s"):  # dozadu od myši
+        sprite1.change_x(-math.cos(angle) * speed)
+        sprite1.change_y(-math.sin(angle) * speed)
+    if stage.is_key_pressed("a"):  # doľava (perpendicularne)
+        sprite1.change_x(-5)  # jednoduchšie strafe
+    if stage.is_key_pressed("d"):  # doprava
+        sprite1.change_x(5)
 
-(výsledok 665 000)
-"""
+    # --- Zmena veľkosti (Space a Shift) ---
+    if stage.is_key_pressed("space"):      sprite1.set_size(max(10, sprite1.size - 1))  # zmenší sa
+    if stage.is_key_pressed("Shift_L"):    sprite1.set_size(min(300, sprite1.size + 1))  # zväčší sa
 
-"""
-Úloha 4.
-Ktoré mesto obsahuje najväčší počet obyvateľov? Napíšte funkciu, ktorá vráti mesto s najväčším počtom obyvateľov.
+    # --- Poradie vrstiev (1 a 2) ---
+    if stage.is_key_pressed("1"): sprite1.bring_to_front()  # sprite1 navrch
+    if stage.is_key_pressed("2"): sprite2.bring_to_front()  # sprite2 navrch
 
-Môžte použiť slovník:
-Obyvatelia = {"Bratislava":500000, "Pezinok":25000, "Presov": 100000, "Humenne": 40000}
-"""
+    # --- Vypálenie projektilu (klik myšou) ---
+    if stage.is_mouse_down():
+        # vytvoríme malý projektil na pozícii sprite1
+        proj = Sprite(stage, "char2.png", x=sprite1.x, y=sprite1.y, size=10)
+        projectiles.append((proj, mx, my))  # pamätáme cieľ (myš)
+        stage.mouse_down = False  # aby sa nestrieľalo nonstop
 
-"""
-Úloha 5.
-Pomocou nasledujúci polí vytvorte slovník:
+    # --- Pohyb a kolízia projektilov ---
+    for proj, tx, ty in projectiles[:]:
+        dx = tx - proj.x
+        dy = ty - proj.y
+        dist = math.hypot(dx, dy)  # vzdialenosť ku cieľu
 
-keys = [1,2,3,4]
-values = ["one", "two", "three", "four"]
-"""
+        # Ak dorazil blízko cieľa, zmizne projektil
+        if dist < 5:
+            projectiles.remove((proj, tx, ty))
+            stage.canvas.delete(proj.id)
+            continue
 
+        # Ak sa projektil stretne so sprite2, sprite2 zmizne a hrá sa zvuk
+        if proj.is_touching_sprite(sprite2) and sprite2.visible:
+            sprite2.hide()  # schováme sprite2
+            play_sound("sound.wav")  # zahráme zvuk
+            projectiles.remove((proj, tx, ty))
+            stage.canvas.delete(proj.id)
+            continue
 
-"""
-Úloha 6.
-Funckia dostane ako parameter string. Do slovníka uložte aké písmená string obsahuje a aký je ich počet:
+        # Inak projektil pokračuje k cieľu
+        proj.change_x(dx / dist * speed)
+        proj.change_y(dy / dist * speed)
 
-Napríklad:
-slovo = “adam”
-
-výsledný slovník
-pismena = {“a”: 2, “d”: 1, “m”: 1}
-"""
-
-################################################################################
-
-"""
-Úloha 7.
-
-Majme slovník:
-
-osoba = {"meno": "Janko", "vek": 12}
-
-Zmeň hodnotu kľúča "vek" na inú hodnotu podľa vlastného výberu. Slovník po úprave vypíš.
-"""
-
-"""
-Úloha 8.
-Napíš funkciu, ktorá dostane ako parameter slovník s názvami miest a počtom obyvateľov.
-
-napr.
-
-Obyvatelia = {"Bratislava":500000, "Pezinok":25000, "Presov": 100000, "Humenne": 40000}
-
-Funkcia má vrátiť počet miest, ktoré majú viac ako 50 000 obyvateľov.
-"""
-
-"""
-Úloha 9.
-Majme slovník:
-
-zvierata = {"pes": "hafka", "macka": "mnauka", "krava": "muka"}
-
-Napíš funkciu, ktorá dostane ako vstup názov zvieraťa (napr. "pes") a vráti, aký zvuk vydáva.
-Ak zviera v slovníku nie je, funkcia má vrátiť text: "Zvieratko nepoznam".
-"""
-
-"""
-Úloha 10.
-Napíš funkciu, ktorá dostane ako parameter slovník so slovenskými slovami a ich anglickými prekladmi, napríklad:
-
-preklady = {"jablko": "apple", "dom": "house"}
-
-Funkcia má vytvoriť vety, kde každá dvojica bude zapísaná vo formáte:
-„slovenské slovo znamená anglické slovo“
-
-Príklad:
-na vstupe zadané slovo "jablko"
-
-Výsledok:
-
-"jablko znamená apple, dom znamená house"
-"""
+    # Zavoláme sa znova o 30 ms
+    stage.root.after(30, game_loop)
 
 
-"""
-BONUS
-Implementujte zjednodušenú hash tabuľku pomocou slovníka s názvom "table". Kód bude obsahovať 3. funkcie:
-
-funkcia 1. my_hash(string)
-– Vypočíta hash zo stringu. Výstupom funkcie je číslo získané zo stringu a to také, aby ak zmením vo vstupnom stringu jedno písmeno na veľké/malé tak sa číslo zmení.
-pre získanie ASCII hodnoty daného znaku v stringu použite funkciu ord(). 
-
-Použitie ord(): 
-Táto funkcia vracia ASCII hodnotu znaku zadaného ako argument teda
-znak = ord("A")
-print(znak)
-
-výsledok: 65
-
-funkcia 2. insert(table, string)
-– Použije funkciu my_hash() na získanie kľúča, a vloží reťazec do slovníka table ako hodnotu pod týmto kľúčom.
-
-funkcia 3. search(table, string)
-– Pomocou my_hash() vypočíta hash zo zadaného reťazca a vráti hodnotu zo slovníka pod týmto kľúčom, ak existuje. Ak nie, vráti napríklad "Nenájdené".
-"""
-
-roman_dict = {
-    1000: "M",
-    900:  "CM",
-    500:  "D",
-    400:  "CD",
-    100:  "C",
-    90:   "XC",
-    50:   "L",
-    40:   "XL",
-    10:   "X",
-    9:    "IX",
-    5:    "V",
-    4:    "IV",
-    1:    "I"
-}
-
-def int_to_roman(num):
-    roman_dict = {
-        1000: "M",
-        900: "CM",
-        500: "D",
-        400: "CD",
-        100: "C",
-        90: "XC",
-        50: "L",
-        40: "XL",
-        10: "X",
-        9: "IX",
-        5: "V",
-        4: "IV",
-        1: "I"
-    }
-
-    roman = ''
-
-    for value in roman_dict:  # (roman_dict.keys(), reverse=True):
-        while num >= value:
-            num -= value
-            roman += roman_dict[value]
-
-    return roman
-
-https://discord.gg/K68WvSUS
+# Spustíme hlavnú slučku
+game_loop()
+stage.start()
