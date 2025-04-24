@@ -143,3 +143,31 @@ roman_dict = {
     4:    "IV",
     1:    "I"
 }
+
+def int_to_roman(num):
+    roman_dict = {
+        1000: "M",
+        900: "CM",
+        500: "D",
+        400: "CD",
+        100: "C",
+        90: "XC",
+        50: "L",
+        40: "XL",
+        10: "X",
+        9: "IX",
+        5: "V",
+        4: "IV",
+        1: "I"
+    }
+
+    roman = ''
+
+    for value in roman_dict:  # (roman_dict.keys(), reverse=True):
+        while num >= value:
+            num -= value
+            roman += roman_dict[value]
+
+    return roman
+
+https://discord.gg/K68WvSUS
