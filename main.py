@@ -83,3 +83,6 @@ def game_loop():
 # Spustíme hlavnú slučku
 game_loop()
 stage.start()
+
+
+# discord link: https://discord.gg/K68WvSUS
